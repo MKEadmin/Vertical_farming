@@ -6,7 +6,7 @@ from umqtt.simple import MQTTClient
 import boot 
 
 
-do_connect('','')
+do_connect('ssid','passwd')
 
 connected = False
 
