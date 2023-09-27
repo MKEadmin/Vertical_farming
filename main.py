@@ -6,7 +6,7 @@ from umqtt.simple import MQTTClient
 import boot 
 
 
-do_connect('Geendraad','NEUSh00rn!')
+do_connect('','')
 
 connected = False
 
