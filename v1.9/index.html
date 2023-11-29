@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vertical Farming Setup Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        pre {
+            font-family: 'Arial', sans-serif;
+            color: #666;
+            margin-top: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<h1>Connect to Wi-Fi and mqtt on your network:</h1>
+<main>
+<pre>
+Enter below your credentials. 
+</pre>
+<form method="POST" action="/connect">
+    <label for="ssid">SSID:</label>
+    <input type="text" name="ssid" id="ssid" placeholder="davinci" required><br>
+
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password" placeholder="davinci123456789" required><br>
+
+    <label for="broker_ip">Mqtt broker IP:</label>
+    <input type="text" name="broker_ip" id="broker_ip" placeholder="192.168.1......." required><br>
+    <label for="client_id">Mqtt client id:</label>
+    <input type="text" name="client_id" id="client_id" placeholder="pico_0" required><br>
+
+    <input type="submit" value="Connect"><br>
+</form>
+<pre>
+    Setup page made by Fabian Boshoven.
+
+    Note: When you click <span style="color: #333; font-weight: bold;">Connect</span>, the webpage stops, and the microcontroller reboots to connect to your Wi-Fi network and your MQTT broker.
+
+    Once the green LED turns on from the PCB, it means it is connected to Wi-Fi.
+
+    For the latest release of Vertical Farming, see my <a href="https://github.com/MKEadmin/Vertical_farming">GitHub page</a>.
+</pre>
+</main>
+</body>
+</html>
