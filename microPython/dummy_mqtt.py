@@ -1,10 +1,10 @@
 """
 dummy mqtt script
 
-datum 18-9-2023
+datum 19-02-2025
 
 gemaakt door fabian
-
+Update Senna
 
 let op nog auto reconnect nodig als bijvoorbeeld wifi uitvalt nog niet ingebouwd maar dan hebben we alvast wat
 
@@ -12,54 +12,47 @@ ook mqtt ontvangen nog niet ingebouwd komt later
 
 """
 
-
-
-
-
 import random
 import time
 
-from paho.mqtt import client as mqtt_client
+import paho.mqtt.client as mqtt
 
 
-broker = '192.168.1.124'   # broker ip adress 
+broker = '192.168.1.201'   # broker ip adress 
 port = 1883
-topic_temperature = "vf/pico_0/temperature"     
-topic_humidity = "vf/pico_0/humidity"
-topic_air = "vf/pico_0/air"
+topic_temperature = "vf/pico_0/sensor/dht22/temp"     
+topic_humidity = "vf/pico_0/sensor/dht22/humidity"
+topic_air = "vf/pico_0/sensor/mq135"
 
 sleep_interval = 10   # hoeveel keer berichten
 
 
-client_id = "pico_0"
+CLIENT_ID = "pico_0"
 
 
 
 def get_dummy_temp():
-    temp = random.uniform(-10,100)
+    temp = random.randint(0,40)
     return temp
 
 def get_dummy_hum():
-    hum = random.uniform(0,100)
+    hum = random.randint(0,40)
     return hum
     
 def get_dummy_air():
-    air = random.uniform(0,1023)
+    air = random.randint(0,40)
     return air
 
+# The callback for when the client receives a CONNACK response from the server.
+def on_connect(client, userdata, flags, reason_code, properties):
+    print(f"Connected with result code {reason_code}")
+    # Subscribing in on_connect() means that if we lose the connection and
+    # reconnect then subscriptions will be renewed.
+    client.subscribe("$SYS/#")
 
-def connect_mqtt():
-    def on_connect(client, userdata, flags, rc):
-        if rc == 0:
-            print("Connected to MQTT Broker!")
-        else:
-            print("Failed to connect, return code %d\n", rc)
-
-    client = mqtt_client.Client(client_id)
-    client.on_connect = on_connect
-    client.connect(broker, port)
-    return client
-
+# The callback for when a PUBLISH message is received from the server.
+def on_message(client, userdata, msg):
+    print(msg.topic+" "+str(msg.payload))
 
 def publish(client):
     while True:
@@ -76,13 +69,27 @@ def publish(client):
        
         
 
+mqttc = mqtt.Client(client_id=CLIENT_ID, callback_api_version=mqtt.CallbackAPIVersion.VERSION2)
 
+mqttc.on_connect = on_connect
+mqttc.on_message = on_message
 def run():
-    client = connect_mqtt()
-    client.loop_start()
-    publish(client)
-    client.loop_stop()
-
+    mqttc.connect(broker, port, 60)
+    while True:
+        publish(mqttc)
+    mqttc.loop_stop()
 
 if __name__ == '__main__':
     run()
+
+
+
+
+
+# Blocking call that processes network traffic, dispatches callbacks and
+# handles reconnecting.
+# Other loop*() functions are available that give a threaded interface and a
+# manual interface.
+# mqttc.loop_forever()
+
+
